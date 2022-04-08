@@ -1,18 +1,19 @@
-import { DB } from '../Database';
-import { MessageHandler } from '../MessageHandler';
+import { DB } from "../Database";
+import { MessageHandler } from "../MessageHandler";
 
 /**
  * Return the result of performing the query in sql/get_songs.sql on the
  * database.
- * 
+ *
  * @returns the songs
  */
 async function onMessage(): Promise<any> {
-  const songs = await DB.runQuery('get_songs');
+    const songs = await DB.runQuery("get_songs");
+    console.log(songs);
 
-  console.log('songs message');
+    console.log("songs message");
 
-  return { songs };
+    return { songs };
 }
 
 // Our schema can be empty, as we are not expecting any data with the message
@@ -23,7 +24,7 @@ const schema = {};
  * the songs in it.
  */
 export const GetSongsHandler = new MessageHandler(
-  'get_songs',
-  schema,
-  onMessage,
+    "get_songs",
+    schema,
+    onMessage
 );
