@@ -10,7 +10,6 @@ import { MessageHandler } from "../MessageHandler";
 async function onMessage(): Promise<any> {
     const songs = await DB.runQuery("get_songs");
     console.log(songs);
-
     console.log("songs message");
 
     return { songs };
