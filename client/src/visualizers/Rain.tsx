@@ -29,11 +29,11 @@ type rainDrop = {
 /**
  * Rain Meter Object
  */
-type rainMeter = {
-  x: number,
-  droplets: number,
-  color: number[]
-}
+// type rainMeter = {
+//   x: number,
+//   droplets: number,
+//   color: number[]
+// }
 
 /**
  * Constructer for Rain Drop object
@@ -59,13 +59,13 @@ function newRainDrop(x: number, y: number, speed: number, color: number[]): rain
  * @param color color of object
  * @returns 
  */
-function newRainMeter(x: number, droplets: number, color: number[]): rainMeter {
-  return {
-    x: x,
-    droplets: droplets,
-    color: color
-  }
-}
+// function newRainMeter(x: number, droplets: number, color: number[]): rainMeter {
+//   return {
+//     x: x,
+//     droplets: droplets,
+//     color: color
+//   }
+// }
 
 /**
  * Tracks all rain drops
@@ -75,9 +75,16 @@ let allRainDrops: rainDrop[] = [];
 /**
  * Tracks all rain meters
  */
-let rainMeters: rainMeter[] = [];
+// let rainMeters: rainMeter[] = [];
 
-let evaporateTimer: number = 0;
+/**
+ * evaporation timer to remove from rain meter.
+ */
+// let evaporateTimer: number = 0;
+
+/**
+ * color array for rain
+ */
 const goldDroplet: number[] = [255,215,0,255];
 const blueDroplet: number[] = [0,0,255,255];
 
@@ -112,25 +119,25 @@ export const RainVisualizer = new Visualizer(
     // update and draw raindrops
     allRainDrops.forEach(element => {
       updateRainDrop(element);
-      if (element.y < height) {
+      if (element.y < height) 
         drawRainDrop(p5, element);
-      } else if (element.color === goldDroplet) {
-        addToRainMeter(newRainMeter(element.x,10,goldDroplet)); 
-      }
+      // if (element.y < height && element.color === goldDroplet)
+      //   addToRainMeter(newRainMeter(element.x,10,goldDroplet));
     });
 
-    // draw rainmeters
-    rainMeters.forEach(element => {
-      if (element.droplets > 0)
-        drawRainMeter(p5, element);
-    });
+    // //draw rainmeters
+    // rainMeters.forEach(element => {
+    //   if (element.droplets > 0)
+    //     drawRainMeter(p5, element);
+    // });
 
-    if (evaporateTimer === 10) {
-      evaporateTimer = 0;
-      evaporateFromRainMeters();
-    } else {
-      evaporateTimer++;
-    }
+    // // evaporate from the rain meter.
+    // if (evaporateTimer === 10) {
+    //   evaporateTimer = 0;
+    //   evaporateFromRainMeters();
+    // } else {
+    //   evaporateTimer++;
+    // }
 
     // remove raindrops that are at the bottom of the screen.
     allRainDrops = allRainDrops.filter(element => element.y < height);
@@ -175,39 +182,39 @@ function updateRainDrop(droplet: rainDrop) {
  * @param p5 canvas
  * @param meter rain meter to be drawn
  */
-function drawRainMeter(p5: P5, meter: rainMeter) {
-  let xCoord: number = meter.x;
-  let yCoord: number = window.innerHeight/2 - meter.droplets;
-  let meterColor = meter.color;
+// function drawRainMeter(p5: P5, meter: rainMeter) {
+//   let xCoord: number = meter.x;
+//   let yCoord: number = window.innerHeight/2 - meter.droplets;
+//   let meterColor = meter.color;
 
-  // set color of rainmeter
-  p5.stroke(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
-  p5.fill(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
+//   // set color of rainmeter
+//   p5.stroke(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
+//   p5.fill(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
   
-  // set shape of meter
-  p5.rect(xCoord, yCoord, 10, meter.droplets);
-}
+//   // set shape of meter
+//   p5.rect(xCoord, yCoord, 10, meter.droplets);
+// }
 
 /**
  * Check if meter is in global rain meter,
  * adds to rain meter 
  * @param meter meter to be added
  */
-function addToRainMeter(meter: rainMeter) {
-  let rainColumn: number = Math.floor(meter.x);
-  rainMeters.forEach(element => {
-    if (element.x === rainColumn)
-      element.droplets += 10;
-  });
-  rainMeters.push(meter);
-}
+// function addToRainMeter(meter: rainMeter) {
+//   let rainColumn: number = Math.floor(meter.x);
+//   rainMeters.forEach(element => {
+//     if (element.x === rainColumn)
+//       element.droplets += 10;
+//   });
+//   rainMeters.push(meter);
+// }
 
 /**
  * evaporates from rain form rain meter.
  */
-function evaporateFromRainMeters() {
-  rainMeters.forEach(meter => {
-    if (meter.droplets > 0)
-      meter.droplets--;
-  });
-}
+// function evaporateFromRainMeters() {
+//   rainMeters.forEach(meter => {
+//     if (meter.droplets > 0)
+//       meter.droplets--;
+//   });
+// }
