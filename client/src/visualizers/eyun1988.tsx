@@ -5,7 +5,7 @@ import * as Tone from "tone";
 // project imports
 import { Visualizer } from "../Visualizers";
 
-export const WaveformVisualizer1 = new Visualizer(
+export const Rasengan = new Visualizer(
     "Eddy's Rasengan",
     (p5: P5, analyzer: Tone.Analyser) => {
         const width = window.innerWidth;

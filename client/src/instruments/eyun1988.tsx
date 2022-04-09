@@ -45,14 +45,17 @@ export function HangKey({
             })}
             style={{
                 // CSS
-                top: 0,
+                // top: 0,
                 left: `${index * 2}rem`,
-                zIndex: minor ? 1 : 0,
-                width: minor ? "1.5rem" : "2rem",
-                marginLeft: minor ? "0.25rem" : 0,
-                // height: `100px`,
-                // width: `100px`,
-                // borderRadius: `100%`,
+                // zIndex: minor ? 1 : 0,
+                // width: minor ? "1.5rem" : "2rem",
+                // marginLeft: minor ? "0.25rem" : 0,
+                height: `100px`,
+                width: `100px`,
+                borderRadius: `100%`,
+                display: `flex`,
+                justifyContent: `center`,
+                alignItems: `center`,
             }}
         ></div>
     );
