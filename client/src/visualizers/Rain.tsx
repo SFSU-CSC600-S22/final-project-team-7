@@ -27,26 +27,59 @@ type rainDrop = {
 }
 
 /**
+ * Rain Meter Object
+ */
+type rainMeter = {
+  x: number,
+  droplets: number,
+  color: number[]
+}
+
+/**
  * Constructer for Rain Drop object
  * @param x coordinate
  * @param y coordinate
  * @param speed of movment of the object
- * @param colors colors of object
+ * @param color color of object
  * @returns 
  */
-function newRainDrop(x: number, y: number, speed: number, colors: number[]): rainDrop {
+function newRainDrop(x: number, y: number, speed: number, color: number[]): rainDrop {
   return {
     x: x,
     y: y,
     speed: speed,
-    color: colors
+    color: color
   };
+}
+
+/**
+ * Constructor for Rain Meter object
+ * @param x coordinate
+ * @param droplets number of droplets to determine Height
+ * @param color color of object
+ * @returns 
+ */
+function newRainMeter(x: number, droplets: number, color: number[]): rainMeter {
+  return {
+    x: x,
+    droplets: droplets,
+    color: color
+  }
 }
 
 /**
  * Tracks all rain drops
  */
 let allRainDrops: rainDrop[] = [];
+
+/**
+ * Tracks all rain meters
+ */
+let rainMeters: rainMeter[] = [];
+
+let evaporateTimer: number = 0;
+const goldDroplet: number[] = [255,215,0,255];
+const blueDroplet: number[] = [0,0,255,255];
 
 /**
  * Rain Visualizer by Justin Lam
@@ -71,17 +104,33 @@ export const RainVisualizer = new Visualizer(
     // Add Raindrops into array.
     if (maxXCoord > 0) {
       // Raindrop based on frequency
-      allRainDrops.push(newRainDrop(maxXCoord, 0, 2, [255,215,0,255]));
+      allRainDrops.push(newRainDrop(maxXCoord, 0, 2, goldDroplet));
       // Random Raindrop for effect
-      allRainDrops.push(newRainDrop(Math.random() * width % width, 0, 2, [0,0,255,255]));
+      allRainDrops.push(newRainDrop(Math.random() * width % width, 0, 2, blueDroplet));
     }
 
     // update and draw raindrops
     allRainDrops.forEach(element => {
       updateRainDrop(element);
-      if (element.y > 0 || element.x < 1)
+      if (element.y < height) {
         drawRainDrop(p5, element);
+      } else if (element.color === goldDroplet) {
+        addToRainMeter(newRainMeter(element.x,10,goldDroplet)); 
+      }
     });
+
+    // draw rainmeters
+    rainMeters.forEach(element => {
+      if (element.droplets > 0)
+        drawRainMeter(p5, element);
+    });
+
+    if (evaporateTimer === 10) {
+      evaporateTimer = 0;
+      evaporateFromRainMeters();
+    } else {
+      evaporateTimer++;
+    }
 
     // remove raindrops that are at the bottom of the screen.
     allRainDrops = allRainDrops.filter(element => element.y < height);
@@ -119,4 +168,46 @@ function updateRainDrop(droplet: rainDrop) {
     if (droplet.y > window.innerHeight)
       droplet.y = window.innerHeight;
   }
+}
+
+/**
+ * Draw rain meter onto canvas
+ * @param p5 canvas
+ * @param meter rain meter to be drawn
+ */
+function drawRainMeter(p5: P5, meter: rainMeter) {
+  let xCoord: number = meter.x;
+  let yCoord: number = window.innerHeight/2 - meter.droplets;
+  let meterColor = meter.color;
+
+  // set color of rainmeter
+  p5.stroke(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
+  p5.fill(meterColor[0],meterColor[1],meterColor[2],meterColor[3]);
+  
+  // set shape of meter
+  p5.rect(xCoord, yCoord, 10, meter.droplets);
+}
+
+/**
+ * Check if meter is in global rain meter,
+ * adds to rain meter 
+ * @param meter meter to be added
+ */
+function addToRainMeter(meter: rainMeter) {
+  let rainColumn: number = Math.floor(meter.x);
+  rainMeters.forEach(element => {
+    if (element.x === rainColumn)
+      element.droplets += 10;
+  });
+  rainMeters.push(meter);
+}
+
+/**
+ * evaporates from rain form rain meter.
+ */
+function evaporateFromRainMeters() {
+  rainMeters.forEach(meter => {
+    if (meter.droplets > 0)
+      meter.droplets--;
+  });
 }
