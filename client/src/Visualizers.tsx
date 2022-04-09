@@ -47,7 +47,11 @@ export function VisualizerContainer({ visualizer }: VisualizerContainerProps) {
         const width = window.innerWidth;
         const height = window.innerHeight / 2;
         // added "webgl" as the third parameter, originally it's not there.
-        p5.createCanvas(width, height, "webgl").parent(canvasParentRef);
+        if (name === "Eddy's Rasengan") {
+            p5.createCanvas(width, height, "webgl").parent(canvasParentRef);
+        } else {
+            p5.createCanvas(width, height).parent(canvasParentRef);
+        }
     };
 
     return (

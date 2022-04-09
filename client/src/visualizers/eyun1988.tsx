@@ -6,7 +6,7 @@ import * as Tone from "tone";
 import { Visualizer } from "../Visualizers";
 
 export const WaveformVisualizer1 = new Visualizer(
-    "Eddy's Waveform",
+    "Eddy's Rasengan",
     (p5: P5, analyzer: Tone.Analyser) => {
         const width = window.innerWidth;
         const height = window.innerHeight / 2;
