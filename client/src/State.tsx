@@ -4,6 +4,7 @@ import { List, Map } from 'immutable';
 // project dependencies
 import { PianoInstrument } from './instruments/Piano';
 import { WaveformVisualizer } from './visualizers/Waveform';
+import { RainVisualizer } from './visualizers/Rain'
 
 
 /** ------------------------------------------------------------------------ **
@@ -21,7 +22,7 @@ const instruments = List([PianoInstrument]);       // similar to Instrument[]
  * Start with the default waveform visualizer.
  * Add your visualizers to this list.
  */
-const visualizers = List([WaveformVisualizer]);    // similar to Visualizer[]
+const visualizers = List([WaveformVisualizer, RainVisualizer]);    // similar to Visualizer[]
 
 
 /**
