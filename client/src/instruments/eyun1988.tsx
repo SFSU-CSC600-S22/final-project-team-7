@@ -20,7 +20,7 @@ interface HangKeyProps {
     index: number; // octave + index together give a location for the piano key
 }
 
-export function PianoKey({
+export function HangKey({
     note,
     synth,
     minor,
@@ -30,6 +30,7 @@ export function PianoKey({
      * This React component corresponds to either a major or minor key in the piano.
      * See `PianoKeyWithoutJSX` for the React component without JSX.
      */
+
     return (
         // Observations:
         // 1. The JSX refers to the HTML-looking syntax within TypeScript.
@@ -49,24 +50,27 @@ export function PianoKey({
                 zIndex: minor ? 1 : 0,
                 width: minor ? "1.5rem" : "2rem",
                 marginLeft: minor ? "0.25rem" : 0,
+                // height: `100px`,
+                // width: `100px`,
+                // borderRadius: `100%`,
             }}
         ></div>
     );
 }
 
-function PianoType({ title, onClick, active }: any): JSX.Element {
-    return (
-        <div
-            onClick={onClick}
-            className={classNames("dim pointer ph2 pv1 ba mr2 br1 fw7 bw1", {
-                "b--black black": active,
-                "gray b--light-gray": !active,
-            })}
-        >
-            {title}
-        </div>
-    );
-}
+// function PianoType({ title, onClick, active }: any): JSX.Element {
+//     return (
+//         <div
+//             onClick={onClick}
+//             className={classNames("dim pointer ph2 pv1 ba mr2 br1 fw7 bw1", {
+//                 "b--black black": active,
+//                 "gray b--light-gray": !active,
+//             })}
+//         >
+//             {title}
+//         </div>
+//     );
+// }
 
 function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
     const keys = List([
@@ -84,28 +88,28 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
         { note: "B", idx: 6 },
     ]);
 
-    const setOscillator = (newType: Tone.ToneOscillatorType) => {
-        setSynth((oldSynth) => {
-            oldSynth.disconnect();
+    // const setOscillator = (newType: Tone.ToneOscillatorType) => {
+    //     setSynth((oldSynth) => {
+    //         oldSynth.disconnect();
 
-            return new Tone.Synth({
-                oscillator: { type: newType } as Tone.OmniOscillatorOptions,
-            }).toDestination();
-        });
-    };
+    //         return new Tone.Synth({
+    //             oscillator: { type: newType } as Tone.OmniOscillatorOptions,
+    //         }).toDestination();
+    //     });
+    // };
 
-    const oscillators: List<OscillatorType> = List([
-        "sine",
-        "sawtooth",
-        "square",
-        "triangle",
-        "fmsine",
-        "fmsawtooth",
-        "fmtriangle",
-        "amsine",
-        "amsawtooth",
-        "amtriangle",
-    ]) as List<OscillatorType>;
+    // const oscillators: List<OscillatorType> = List([
+    //     "sine",
+    //     "sawtooth",
+    //     "square",
+    //     "triangle",
+    //     "fmsine",
+    //     "fmsawtooth",
+    //     "fmtriangle",
+    //     "amsine",
+    //     "amsawtooth",
+    //     "amtriangle",
+    // ]) as List<OscillatorType>;
 
     return (
         <div className="pv4">
@@ -115,7 +119,7 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
                         const isMinor = key.note.indexOf("b") !== -1;
                         const note = `${key.note}${octave}`;
                         return (
-                            <PianoKey
+                            <HangKey
                                 key={note} //react key
                                 note={note}
                                 synth={synth}
@@ -127,7 +131,7 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
                     })
                 )}
             </div>
-            <div className={"pl4 pt4 flex"}>
+            {/* <div className={"pl4 pt4 flex"}>
                 {oscillators.map((o) => (
                     <PianoType
                         key={o}
@@ -136,7 +140,7 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
                         active={synth?.oscillator.type === o}
                     />
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 }
