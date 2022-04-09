@@ -16,6 +16,9 @@ import * as Tone from 'tone';
 // project imports
 import { Visualizer } from '../Visualizers';
 
+/**
+ * Rain Drop Object
+ */
 type rainDrop = {
   x: number,
   y: number,
@@ -23,6 +26,14 @@ type rainDrop = {
   color: number[]
 }
 
+/**
+ * Constructer for Rain Drop object
+ * @param x coordinate
+ * @param y coordinate
+ * @param speed of movment of the object
+ * @param colors colors of object
+ * @returns 
+ */
 function newRainDrop(x: number, y: number, speed: number, colors: number[]): rainDrop {
   return {
     x: x,
@@ -32,66 +43,56 @@ function newRainDrop(x: number, y: number, speed: number, colors: number[]): rai
   };
 }
 
-
+/**
+ * Tracks all rain drops
+ */
 let allRainDrops: rainDrop[] = [];
 
+/**
+ * Rain Visualizer by Justin Lam
+ */
 export const RainVisualizer = new Visualizer(
   'Rain',
   (p5: P5, analyzer: Tone.Analyser) => {
     const width = window.innerWidth;
-    const height = window.innerHeight / 2;
+    const height = window.innerHeight;
 
     p5.background(0, 0, 0, 255);
 
     const values = analyzer.getValue();
     let maxXCoord: number = 0;
     for (let i = 0; i < values.length; i++) {
-      // p5.stroke(0,0,255,255);
       let valueToBeCheck = width * (values[i] as number)
       if (valueToBeCheck > 0) {
         maxXCoord = Math.max(valueToBeCheck, maxXCoord);
       }
     }
 
+    // Add Raindrops into array.
     if (maxXCoord > 0) {
       // Raindrop based on frequency
       allRainDrops.push(newRainDrop(maxXCoord, 0, 2, [255,215,0,255]));
       // Random Raindrop for effect
       allRainDrops.push(newRainDrop(Math.random() * width % width, 0, 2, [0,0,255,255]));
-      drawRainDrop(p5, allRainDrops[allRainDrops.length - 1]);
     }
 
+    // update and draw raindrops
     allRainDrops.forEach(element => {
       updateRainDrop(element);
       if (element.y > 0 || element.x < 1)
         drawRainDrop(p5, element);
     });
 
-    allRainDrops = allRainDrops.filter(element => element.y < window.innerHeight);
-
-    // p5.strokeWeight(dim * 0.01);
-    // p5.stroke(0, 0, 255, 255);
-    // p5.noFill();
-    // const values = analyzer.getValue();
-    // p5.beginShape();
-    // for (let i = 0; i < values.length; i++) {
-    //   const amplitude = values[i] as number;
-    //   const y = p5.map(i, 0, values.length - 1, 0, height);
-    //   const x = height / 2 + amplitude * height;
-    //   // Place vertex
-    //   p5.vertex(x, y);
-    // }
-    // p5.endShape();
+    // remove raindrops that are at the bottom of the screen.
+    allRainDrops = allRainDrops.filter(element => element.y < height);
 
   },
 );
 
 /**
- * 
- * @param x x coordinate on grid
- * @param y y coodeinate on grid
- * @param speed speed of falling rain drop
- * @param color color of rain drop
+ * Draws the raindrop on the canvas using the raindrop object
+ * @param p5 canvas
+ * @param droplet object to be drawn
  */
 function drawRainDrop(p5: P5, droplet: rainDrop) {
   let xCoord: number = droplet.x;
@@ -109,8 +110,8 @@ function drawRainDrop(p5: P5, droplet: rainDrop) {
 }
 
 /**
- * 
- * @param droplet update y coordinate of object as it falls
+ * Update y coordinate of object as it falls
+ * @param droplet object to be updated
  */
 function updateRainDrop(droplet: rainDrop) {
   if (droplet.y < window.innerHeight) {
