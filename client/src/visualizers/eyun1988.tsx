@@ -19,11 +19,11 @@ export const Rasengan = new Visualizer(
         p5.noFill();
 
         const values = analyzer.getValue();
-        p5.beginShape();
 
-        p5.rotateX(p5.frameCount * 0.6);
-        p5.rotateY(p5.frameCount * 0.6);
-        p5.rotateZ(p5.frameCount * 0.6);
+        p5.beginShape();
+        p5.rotateX(p5.frameCount * 0.1 * 100);
+        p5.rotateY(p5.frameCount * 0.1 * 100);
+        p5.rotateZ(p5.frameCount * 0.1 * 100);
         for (let j = 0; j < 1; j++) {
             p5.push();
             let sum: number = 0;
@@ -32,16 +32,24 @@ export const Rasengan = new Visualizer(
                 sum += sum;
             }
 
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 15; i++) {
                 p5.translate(
-                    p5.sin(sum * 90 * 0.01 + j) * 100,
-                    p5.sin(sum * 90 * 0.01 + j) * 100,
-                    i * 0.01
+                    // p5.sin(90 * 0.01 + j) * 100,
+                    // p5.sin(90 * 0.01 + j) * 100,
+                    // i * 0.01
+                    p5.sin(sum * 20 * 0.01 + j) * 100,
+                    p5.sin(sum * 20 * 0.01 + j) * 100,
+                    i * 0.01 + sum
                 );
-                p5.rotateZ(p5.frameCount * 0.002);
+                p5.rotateX(p5.frameCount * 0.1 * 100);
+                p5.rotateY(p5.frameCount * 0.1 * 100);
+                p5.rotateZ(p5.frameCount * 0.1 * 100);
+                // p5.rotateZ(p5.frameCount * 0.002);
                 p5.push();
                 p5.fill(p5.color(0, 0, 0));
-                p5.sphere(20, 10, 10);
+                p5.scale(1 + p5.abs(sum) * 5);
+                p5.sphere(40, 10, 10);
+                // p5.sphere(40, 10, 10);
                 p5.pop();
             }
             p5.pop();
