@@ -76,9 +76,11 @@ export function appReducer(state: AppState, action: DispatchAction): AppState {
         return state.set('songs', songs);
       }
       case 'PLAY_SONG': {
+        console.log(args.get('id)'));
+        console.log(state.get('songs'));
         const notes = state
           .get('songs')
-          .find((s: any) => s.get('id') === args.get('id'))
+          .find((s: any) => s.get('songId') === args.get('id'))
           .get('notes');
         return state.set('notes', notes);
       }
