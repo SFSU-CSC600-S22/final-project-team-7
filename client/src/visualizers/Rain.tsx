@@ -101,12 +101,11 @@ export const RainVisualizer = new Visualizer(
 
     const values = analyzer.getValue();
     let maxXCoord: number = 0;
-    for (let i = 0; i < values.length; i++) {
-      let valueToBeCheck = width * (values[i] as number)
-      if (valueToBeCheck > 0) {
+    values.forEach(element => {
+      let valueToBeCheck = width * (element as number);
+      if (valueToBeCheck > 0) 
         maxXCoord = Math.max(valueToBeCheck, maxXCoord);
-      }
-    }
+    })
 
     // Add Raindrops into array.
     if (maxXCoord > 0) {
