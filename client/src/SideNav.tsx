@@ -172,7 +172,11 @@ function SongsNav({ state, dispatch }: SideNavProps): JSX.Element {
                     }
                 >
                     <Music20 className="mr1" />
-                    {song.get("songTitle")}
+                    <p>
+                        {song.get("songTitle")} by{" "}
+                        <b>{song.get("artistName")}</b> from{" "}
+                        {song.get("albumTitle")}{" "}
+                    </p>
                 </div>
             ))}
         </Section>
@@ -225,7 +229,7 @@ function RadioButton({
 
 const Section: React.FC<{ title: string }> = ({ title, children }) => {
     return (
-        <div className="flex flex-column h-25 bb b--light-gray pa3">
+        <div className="flex flex-column h-auto bb b--light-gray pa3">
             <div className="fw7 mb2">{title} </div>
             <div className="flex-auto overflow-scroll">{children}</div>
         </div>
