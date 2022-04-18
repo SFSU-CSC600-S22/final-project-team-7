@@ -1,5 +1,6 @@
 -- SELECT * FROM songs;
 SELECT DISTINCT 
+    s.song_id,
     s.song_title, 
     s.notes, 
     artist_name, 

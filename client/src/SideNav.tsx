@@ -155,6 +155,8 @@ function SongsNav({ state, dispatch }: SideNavProps): JSX.Element {
      */
 
     let songs: List<any> = state.get("songs", List());
+    console.log(songs);
+
     // songs.forEach((x) => console.log(x));
     // songs = songs.filter((x) => x.get("songTitle") === "Mario");
     return (

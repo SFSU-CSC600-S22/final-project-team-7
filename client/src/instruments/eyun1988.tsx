@@ -39,8 +39,9 @@ export function HangKey({
         // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
         // 3. The curly braces `{` and `}` should remind you of string interpolation.
         <div
-            onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `8n`)} // Question: what is `onMouseDown`?
-            // onMouseUp={() => synth?.triggerRelease("+0.25")} // Question: what is `onMouseUp`?
+            // onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `2n`)} // Question: what is `onMouseDown`?
+            onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
+            onMouseUp={() => synth?.triggerRelease("+0.25")} // Question: what is `onMouseUp`?
             className={classNames("ba pointer absolute dim", {
                 // "bg-black black h3": minor, // minor keys are black
                 "black bg-white h4": !minor, // major keys are white
