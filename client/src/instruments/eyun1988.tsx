@@ -14,7 +14,7 @@ import { Instrument, InstrumentProps } from "../Instruments";
 interface HangKeyProps {
     note: string; // C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
     duration?: string;
-    synth?: Tone.Synth; // Contains library code for making sound
+    synth?: Tone.Synth | Tone.AMSynth; // Contains library code for making sound
     minor?: boolean; // True if minor key, false if major key
     octave: number;
     index: number; // octave + index together give a location for the piano key
@@ -39,9 +39,8 @@ export function HangKey({
         // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
         // 3. The curly braces `{` and `}` should remind you of string interpolation.
         <div
-            // onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `2n`)} // Question: what is `onMouseDown`?
-            onMouseDown={() => synth?.triggerAttack(`${note}`)} // Question: what is `onMouseDown`?
-            onMouseUp={() => synth?.triggerRelease("+0.25")} // Question: what is `onMouseUp`?
+            onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `8n`)} // Question: what is `onMouseDown`?
+            // onMouseUp={() => synth?.triggerRelease("+0.25")} // Question: what is `onMouseUp`?
             className={classNames("ba pointer absolute dim", {
                 // "bg-black black h3": minor, // minor keys are black
                 "black bg-white h4": !minor, // major keys are white
@@ -98,60 +97,44 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
         { note: "B", idx: 6, degree: 330 },
     ]);
 
-    // const setOscillator = (newType: Tone.ToneOscillatorType) => {
-    //     setSynth((oldSynth) => {
-    //         oldSynth.disconnect();
+    const setOscillator = (newType: Tone.ToneOscillatorType) => {
+        setSynth((oldSynth) => {
+            oldSynth.disconnect();
 
-    //         return new Tone.Synth({
-    //             oscillator: { type: newType } as Tone.OmniOscillatorOptions,
-    //         }).toDestination();
-    //     });
-    // };
-
-    // const oscillators: List<OscillatorType> = List([
-    //     "sine",
-    //     "sawtooth",
-    //     "square",
-    //     "triangle",
-    //     "fmsine",
-    //     "fmsawtooth",
-    //     "fmtriangle",
-    //     "amsine",
-    //     "amsawtooth",
-    //     "amtriangle",
-    // ]) as List<OscillatorType>;
-
+            return new Tone.AMSynth({
+                oscillator: { type: newType } as Tone.OmniOscillatorOptions,
+            }).toDestination() as any;
+        });
+    };
     return (
         <div className="pv4">
-            <div className="relative dib h4 w-100 ml4">
-                {Range(2, 7).map((octave) =>
-                    keys.map((key) => {
-                        const isMinor = key.note.indexOf("b") !== -1;
-                        const note = `${key.note}${octave}`;
-                        return (
-                            <HangKey
-                                key={note} //react key
-                                note={note}
-                                synth={synth}
-                                minor={isMinor}
-                                octave={octave}
-                                index={(octave - 2) * 7 + key.idx}
-                                degree={key.degree}
-                            />
-                        );
-                    })
-                )}
+            {/* <div className="relative dib h4 w-100 ml4"> */}
+            <div
+                className=""
+                style={{
+                    height: `452px`,
+                    width: `445px`,
+                    borderRadius: `51%`,
+                    // background: `black`,
+                    border: `1px solid black`,
+                    position: `relative`,
+                    marginLeft: `100px`,
+                }}
+            >
+                {keys.map((key) => {
+                    const note = `${key.note}4`;
+                    return (
+                        <HangKey
+                            key={note} //react key
+                            note={note}
+                            synth={synth}
+                            octave={4}
+                            index={(4 - 2) * 7 + key.idx}
+                            degree={key.degree}
+                        />
+                    );
+                })}
             </div>
-            {/* <div className={"pl4 pt4 flex"}>
-                {oscillators.map((o) => (
-                    <PianoType
-                        key={o}
-                        title={o}
-                        onClick={() => setOscillator(o)}
-                        active={synth?.oscillator.type === o}
-                    />
-                ))}
-            </div> */}
         </div>
     );
 }
