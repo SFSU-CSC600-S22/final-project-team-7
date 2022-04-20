@@ -6,6 +6,7 @@ import { PianoInstrument } from "./instruments/Piano";
 import { WaveformVisualizer } from "./visualizers/Waveform";
 import { HangInstrument } from "./instruments/eyun1988";
 import { Rasengan } from "./visualizers/eyun1988";
+import { BrianVis } from "./visualizers/BrianVis";
 
 /** ------------------------------------------------------------------------ **
  * The entire application state is stored in AppState.
@@ -22,7 +23,7 @@ const instruments = List([PianoInstrument, HangInstrument]); // similar to Instr
  * Start with the default waveform visualizer.
  * Add your visualizers to this list.
  */
-const visualizers = List([WaveformVisualizer, Rasengan]); // similar to Visualizer[]
+const visualizers = List([WaveformVisualizer, Rasengan, BrianVis]); // similar to Visualizer[]
 
 /**
  * The default application state contains a list of instruments and a list of visualizers.
