@@ -8,10 +8,15 @@ const BrianVis = new Visualizer(
         if (!(window as any).brianLeftOffset || !(window as any).brianVisThrottle) {
             (window as any).brianLeftOffset = 16 * parseFloat(getComputedStyle(document.documentElement).fontSize);
             (window as any).brianVisThrottle = [];
-            for(let i = 0;i< 22;i++){
+            (window as any).brianVisTCount = 0;
+            for (let i = 0; i < 22; i++) {
                 (window as any).brianVisThrottle.push(0)
             }
         }
+
+        const frameThrottle = 3;
+        const addThrottle = 1.2;
+        const subtractThrottle = .7;
 
         const width = window.innerWidth - (window as any).brianLeftOffset;
         const height = window.innerHeight / 2;
@@ -23,30 +28,31 @@ const BrianVis = new Visualizer(
 
         let bottomOffset = 4;
         let topOffset = 4;
-        
-        for(let i = 0; i<(window as any).brianVisThrottle.length;i++){
+
+        (window as any).brianVisTCount >= frameThrottle && (window as any).brianVisThrottle.forEach((currentThrottle: number, index: number) => {
             const value = analyzer.getValue();
-            if(value.length > i){
-                const currentThrottle = (window as any).brianVisThrottle[i];
-                let currentAmp = Math.abs(p5.map(value[i] as number, 0, .23, 0, heightSquareCount));
-                if(currentThrottle >= currentAmp){
-                    (window as any).brianVisThrottle[i] = Math.max(currentThrottle - .40, currentThrottle - currentAmp);
-                }else{
-                    (window as any).brianVisThrottle[i] = Math.min(currentThrottle + .82, currentThrottle + currentAmp);
+            if (value.length > index) {
+                let currentAmp = Math.abs(p5.map(value[index] as number, 0, .23, 0, heightSquareCount));
+                if (currentThrottle >= currentAmp) {
+                    (window as any).brianVisThrottle[index] = Math.max(currentThrottle - subtractThrottle, currentThrottle - currentAmp === 0 ? .3 : currentAmp);
+                } else {
+                    (window as any).brianVisThrottle[index] = Math.min(currentThrottle + addThrottle, currentThrottle + currentAmp);
                 }
             }
-        }
+            (window as any).brianVisTCount = 0;
+        })
+
 
         p5.background(30, 30, 30, 255);
 
         for (let i = 0; i < widthSquareCount; i++) {
-            const currentThrottle = (window as any).brianVisThrottle[i];            
+            const currentThrottle = (window as any).brianVisThrottle[i];
             for (let j = heightSquareCount - topOffset; j >= bottomOffset; j--) {
                 let invertJ = Math.abs(j - heightSquareCount);
                 if (invertJ < currentThrottle) {
-                    if(currentThrottle > heightSquareCount - topOffset - 2 && invertJ > heightSquareCount - topOffset - 2){
+                    if (currentThrottle > heightSquareCount - topOffset - 2 && invertJ > heightSquareCount - topOffset - 2) {
                         p5.fill(140, 33, 0);
-                    }else{
+                    } else {
                         p5.fill(11, 140, 0);
                     }
                 } else {
@@ -55,6 +61,8 @@ const BrianVis = new Visualizer(
                 p5.rect(i * squareWidth, j * squareHeight, squareWidth, squareHeight, 5);
             }
         }
+
+        (window as any).brianVisTCount++;
     }
 );
 
