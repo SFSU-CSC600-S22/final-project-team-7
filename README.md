@@ -1,4 +1,5 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=7454050&assignment_repo_type=AssignmentRepo)
+
 # LamdbaVibe
 
 CSC 600 musical application. Get ready to shred.
@@ -49,3 +50,7 @@ Runs the server in development mode.
 
 The server will restart if you make edits.
 You will also see errors in the console.
+
+### Database
+
+In order to update the data in our sqlite3 database, we need to delete the app.db file and rerun the server using `npm start`
