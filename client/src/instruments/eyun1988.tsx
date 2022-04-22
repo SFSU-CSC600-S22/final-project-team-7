@@ -1,9 +1,8 @@
 // 3rd party library imports
 import * as Tone from "tone";
 import classNames from "classnames";
-// import {List, Range} from "immutable";
 import { List } from "immutable";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useCallback } from "react";
 
 // project imports
 import { Instrument, InstrumentProps } from "../Instruments";
@@ -18,7 +17,6 @@ interface HangKeyProps {
     synth?: Tone.Synth; // Contains library code for making sound
     minor?: boolean; // True if minor key, false if major key
     octave: number;
-    index: number; // octave + index together give a location for the piano key
     degree: number; // to get the values
 }
 
@@ -26,28 +24,16 @@ export function HangKey({
     note,
     synth,
     minor,
-    index,
+    // index,
     degree,
 }: HangKeyProps): JSX.Element {
     return (
-        // Observations:
-        // 1. The JSX refers to the HTML-looking syntax within TypeScript.
-        // 2. The JSX will be **transpiled** into the corresponding `React.createElement` library call.
-        // 3. The curly braces `{` and `}` should remind you of string interpolation.
         <div
             onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `8n`)} // Question: what is `onMouseDown`?
-            // onMouseUp={() => synth?.triggerRelease("+0.25")} // Question: what is `onMouseUp`?
             className={classNames("ba pointer absolute dim", {
-                // "bg-black black h3": minor, // minor keys are black
                 "black bg-white h4": !minor, // major keys are white
             })}
             style={{
-                // CSS
-                // top: 0,
-                // left: `${index * 2}rem`,
-                // zIndex: minor ? 1 : 0,
-                // width: minor ? "1.5rem" : "2rem",
-                // marginLeft: minor ? "0.25rem" : 0,
                 height: `50px`,
                 width: `50px`,
                 position: `absolute`,
@@ -63,34 +49,21 @@ export function HangKey({
     );
 }
 
-// function PianoType({ title, onClick, active }: any): JSX.Element {
-//     return (
-//         <div
-//             onClick={onClick}
-//             className={classNames("dim pointer ph2 pv1 ba mr2 br1 fw7 bw1", {
-//                 "b--black black": active,
-//                 "gray b--light-gray": !active,
-//             })}
-//         >
-//             {title}
-//         </div>
-//     );
-// }
-
 function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
+    const octave = 4;
     const keys = List([
-        { note: "C", idx: 0, degree: 0 },
-        { note: "Db", idx: 0.5, degree: 30 },
-        { note: "D", idx: 1, degree: 60 },
-        { note: "Eb", idx: 1.5, degree: 90 },
-        { note: "E", idx: 2, degree: 120 },
-        { note: "F", idx: 3, degree: 150 },
-        { note: "Gb", idx: 3.5, degree: 180 },
-        { note: "G", idx: 4, degree: 210 },
-        { note: "Ab", idx: 4.5, degree: 240 },
-        { note: "A", idx: 5, degree: 270 },
-        { note: "Bb", idx: 5.5, degree: 300 },
-        { note: "B", idx: 6, degree: 330 },
+        { note: "C", degree: 0 },
+        { note: "Db", degree: 30 },
+        { note: "D", degree: 60 },
+        { note: "Eb", degree: 90 },
+        { note: "E", degree: 120 },
+        { note: "F", degree: 150 },
+        { note: "Gb", degree: 180 },
+        { note: "G", degree: 210 },
+        { note: "Ab", degree: 240 },
+        { note: "A", degree: 270 },
+        { note: "Bb", degree: 300 },
+        { note: "B", degree: 330 },
     ]);
 
     const setOscillator = (newType: Tone.ToneOscillatorType) => {
@@ -107,26 +80,46 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
             }).toDestination() as any;
         });
     };
-    // const setOscillator = (newType: Tone.ToneOscillatorType) => {
-    //     setSynth((oldSynth) => {
-    //         oldSynth.disconnect();
-    //         return new Tone.PluckSynth({
-    //             attackNoise: 10,
-    //             dampening: 5700,
-    //             release: 10,
-    //         }).toDestination() as any;
-    //     });
-    // };
+
+    // order of keys are q,w,e,r,a,s,d,f,z,x,c,v
+    const keyCodeLookUpTable: { [key: string]: string } = {
+        "81": (keys.get(0)?.note + octave.toString()) as string,
+        "87": (keys.get(1)?.note + octave.toString()) as string,
+        "69": (keys.get(2)?.note + octave.toString()) as string,
+        "82": (keys.get(3)?.note + octave.toString()) as string,
+        "65": (keys.get(4)?.note + octave.toString()) as string,
+        "83": (keys.get(5)?.note + octave.toString()) as string,
+        "68": (keys.get(6)?.note + octave.toString()) as string,
+        "70": (keys.get(7)?.note + octave.toString()) as string,
+        "90": (keys.get(8)?.note + octave.toString()) as string,
+        "88": (keys.get(9)?.note + octave.toString()) as string,
+        "67": (keys.get(10)?.note + octave.toString()) as string,
+        "86": (keys.get(11)?.note + octave.toString()) as string,
+    };
+
+    const keyStrokes = useCallback(
+        (e) => {
+            synth?.triggerAttack(keyCodeLookUpTable[e.keyCode]);
+            synth?.triggerRelease("+0.5");
+        },
+        [synth]
+    );
 
     useEffect(() => {
-        setOscillator("triangle5");
+        document.addEventListener("keydown", keyStrokes);
+        return () => {
+            document.removeEventListener("keydown", keyStrokes);
+        };
+    }, [keyStrokes]);
 
+    // init sound
+    useEffect(() => {
+        setOscillator("triangle5");
         return () => {};
     }, []);
 
     return (
         <div className="pv4">
-            {/* <div className="relative dib h4 w-100 ml4"> */}
             <div
                 className=""
                 style={{
@@ -139,14 +132,13 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
                 }}
             >
                 {keys.map((key) => {
-                    const note = `${key.note}4`;
+                    const note = `${key.note}${octave}`;
                     return (
                         <HangKey
                             key={note} //react key
                             note={note}
                             synth={synth}
-                            octave={4}
-                            index={(4 - 2) * 7 + key.idx}
+                            octave={octave}
                             degree={key.degree}
                         />
                     );
