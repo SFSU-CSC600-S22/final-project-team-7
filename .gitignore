@@ -31,3 +31,6 @@ workspace.code-workspace
 
 # sqlite database file
 app.db
+
+# Jetbrain stuff
+.idea
