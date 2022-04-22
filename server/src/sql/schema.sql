@@ -33,4 +33,4 @@ INSERT INTO artists (artist_id, artist_name) VALUES (2, "Johann Pachelbel");
 
 INSERT INTO albums (album_id, album_title, artist_id) VALUES (2, "Pachelbel's Canon", 2);
 
-INSERT INTO songs (song_id, song_title, notes, artist_id, album_id) VALUES (2, 'Canon in D (for beginners)', 'C4 G4 A#4 E#4 F4 C4 F4 G4 C4 G4 A#4 E#4 F4 C4 F4 G4 C4 G4 A#4 E#4 C4 F4 G4 C4', 2, 2);
+INSERT INTO songs (song_id, song_title, notes, artist_id, album_id) VALUES (2, 'Canon in D (for beginners)', 'C4 G4 Ab4 Eb4 F4 C4 F4 G4 C4 G4 Ab4 Eb4 F4 C4 F4 G4 C4 G4 Ab4 Eb4 C4 F4 G4 C4', 2, 2);
