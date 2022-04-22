@@ -1,8 +1,9 @@
 // 3rd party library imports
 import * as Tone from "tone";
 import classNames from "classnames";
-import { List, Range } from "immutable";
-import React from "react";
+// import {List, Range} from "immutable";
+import { List } from "immutable";
+import React, { useEffect, useRef } from "react";
 
 // project imports
 import { Instrument, InstrumentProps } from "../Instruments";
@@ -14,7 +15,7 @@ import { Instrument, InstrumentProps } from "../Instruments";
 interface HangKeyProps {
     note: string; // C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
     duration?: string;
-    synth?: Tone.Synth | Tone.AMSynth; // Contains library code for making sound
+    synth?: Tone.Synth; // Contains library code for making sound
     minor?: boolean; // True if minor key, false if major key
     octave: number;
     index: number; // octave + index together give a location for the piano key
@@ -28,11 +29,6 @@ export function HangKey({
     index,
     degree,
 }: HangKeyProps): JSX.Element {
-    /**
-     * This React component corresponds to either a major or minor key in the piano.
-     * See `PianoKeyWithoutJSX` for the React component without JSX.
-     */
-
     return (
         // Observations:
         // 1. The JSX refers to the HTML-looking syntax within TypeScript.
@@ -100,12 +96,34 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
     const setOscillator = (newType: Tone.ToneOscillatorType) => {
         setSynth((oldSynth) => {
             oldSynth.disconnect();
-
-            return new Tone.AMSynth({
+            return new Tone.FMSynth({
                 oscillator: { type: newType } as Tone.OmniOscillatorOptions,
+                envelope: {
+                    attack: 0.1,
+                    decay: 1,
+                    sustain: 0,
+                    release: 1,
+                },
             }).toDestination() as any;
         });
     };
+    // const setOscillator = (newType: Tone.ToneOscillatorType) => {
+    //     setSynth((oldSynth) => {
+    //         oldSynth.disconnect();
+    //         return new Tone.PluckSynth({
+    //             attackNoise: 10,
+    //             dampening: 5700,
+    //             release: 10,
+    //         }).toDestination() as any;
+    //     });
+    // };
+
+    useEffect(() => {
+        setOscillator("triangle5");
+
+        return () => {};
+    }, []);
+
     return (
         <div className="pv4">
             {/* <div className="relative dib h4 w-100 ml4"> */}
@@ -115,7 +133,6 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
                     height: `452px`,
                     width: `445px`,
                     borderRadius: `51%`,
-                    // background: `black`,
                     border: `1px solid black`,
                     position: `relative`,
                     marginLeft: `100px`,
