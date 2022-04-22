@@ -39,12 +39,12 @@ export function GuitarAcousticNote({
     minor,
     index,
 }: GuitarAcousticKeyProps): JSX.Element {
+  const display = (note.indexOf('4') === -1) ? note : note.slice(0, note.length -1);
     return (
         <div
             onMouseDown={() => synth?.triggerAttack(`${note}`)}
             onMouseUp={() => synth?.triggerRelease('+0.25')}
-            className={classNames('ba pointer absolute dim black bg-white h4' // major keys are white
-              )}
+            className={classNames('ba pointer absolute dim black bg-white h4')}
             style={{
                 top: 0,
                 left: `${index * 2}rem`,
@@ -53,7 +53,7 @@ export function GuitarAcousticNote({
                 height: '1rem',
                 marginLeft: '0.25rem',
             }}
-        >{note}</div>
+        >{display}</div>
     );
 }
 
@@ -69,16 +69,14 @@ function GuitarAcousticKeyWithoutJSX({
     {
       onMouseDown: () => synth?.triggerAttack(`${note}`),
       onMouseUp: () => synth?.triggerRelease('+0.25'),
-      className: classNames('ba pointer absolute dim', {
-        'bg-black black h3': minor,
-        'black bg-white h4': !minor,
-      }),
+      className: classNames('ba pointer absolute dim black bg-white h4'),
       style: {
         top: 0,
         left: `${index * 2}rem`,
-        zIndex: minor ? 1 : 0,
-        width: minor ? '1.5rem' : '2rem',
-        marginLeft: minor ? '0.25rem' : 0,
+        zIndex: 1,
+        width:'2rem',
+        height: '1rem',
+        marginLeft: '0.25rem',
       },
     },
     []
@@ -97,44 +95,50 @@ function GuitarAcousticType({ title, onClick, active }: any): JSX.Element {
   );
 }
 
-// 
+/**
+ * The Guitar itself
+ */
 function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
-    const keys = List([
-        { note: 'E', idx: 0 },
-        { note: 'A', idx: 1 },
-        { note: 'D', idx: 2 },
-        { note: 'C', idx: 3 },
-        { note: 'G', idx: 4 },
-        { note: 'Eb', idx: 5 },
-        { note: 'Ab', idx: 6 },
-        { note: 'Db', idx: 7 },
-        { note: 'C7', idx: 8 },
-        { note: 'G7', idx: 9 },
-        { note: 'E7', idx: 10 },
-        { note: 'A7', idx: 11 },
-        { note: 'D7', idx: 12 },
-        { note: 'F', idx: 13 },
-        { note: 'B7', idx: 14 },
-    ]);
+  // Set keys/notes for the instruments
+  const keys = List([
+    { note: 'E', idx: 0 },
+    { note: 'A', idx: 1 },
+    { note: 'D', idx: 2 },
+    { note: 'C', idx: 3 },
+    { note: 'G', idx: 4 },
+    { note: 'Eb', idx: 5 },
+    { note: 'Ab', idx: 6 },
+    { note: 'Db', idx: 7 },
+    { note: 'C7', idx: 8 },
+    { note: 'G7', idx: 9 },
+    { note: 'E7', idx: 10 },
+    { note: 'A7', idx: 11 },
+    { note: 'D7', idx: 12 },
+    { note: 'F', idx: 13 },
+    { note: 'B7', idx: 14 },
+  ]);
 
-    const setOscillator = () => {
-        setSynth(oldSynth => {
-          oldSynth.disconnect();
-  
-          return new Tone.PluckSynth({
-            attackNoise: 2,
-            release: 5,
-            dampening: 3000,
-          }).toDestination() as any;
-        });
-    };
+  /**
+   * Change synth type to plucksynth
+   */
+  const setOscillator = () => {
+    setSynth(oldSynth => {
+      oldSynth.disconnect();
+      return new Tone.PluckSynth({
+        attackNoise: 4,
+        release: 5,
+        dampening: 6500,
+        resonance: 0.9
+      }).toDestination() as any;
+    });};
 
+    // set synth to plucksynth
     useEffect(() => {
-        setOscillator();
-
-        return () => {};
+      setOscillator();
+      return () => {};
     }, []);
 
+    // return object that makes up the guitar
     return (
     <div className="pv4">
     <div className="relative dib h4 w-100 ml4">
@@ -155,7 +159,7 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
         }),
       )}
       
-    <img src={guitarImage} alt='guitar'></img>
+      <img src={guitarImage} alt='guitar' height='230px' width='460px'></img>
     </div>
     </div>);
 }
