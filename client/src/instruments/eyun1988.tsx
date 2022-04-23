@@ -6,6 +6,7 @@ import React, { useEffect, useCallback } from "react";
 
 // project imports
 import { Instrument, InstrumentProps } from "../Instruments";
+import { useKeyboardNotes } from "../hooks/useKeyboardNotes";
 
 /** ------------------------------------------------------------------------ **
  * Contains implementation of components for Hang.
@@ -83,21 +84,21 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
 
     // order of keys are q,w,e,r,a,s,d,f,z,x,c,v
     const keyCodeLookUpTable: { [key: string]: string } = {
-        "81": (keys.get(0)?.note + octave.toString()) as string,
-        "87": (keys.get(1)?.note + octave.toString()) as string,
-        "69": (keys.get(2)?.note + octave.toString()) as string,
-        "82": (keys.get(3)?.note + octave.toString()) as string,
-        "65": (keys.get(4)?.note + octave.toString()) as string,
-        "83": (keys.get(5)?.note + octave.toString()) as string,
-        "68": (keys.get(6)?.note + octave.toString()) as string,
-        "70": (keys.get(7)?.note + octave.toString()) as string,
-        "90": (keys.get(8)?.note + octave.toString()) as string,
-        "88": (keys.get(9)?.note + octave.toString()) as string,
-        "67": (keys.get(10)?.note + octave.toString()) as string,
-        "86": (keys.get(11)?.note + octave.toString()) as string,
+        "q": (keys.get(0)?.note + octave.toString()) as string,
+        "w": (keys.get(1)?.note + octave.toString()) as string,
+        "e": (keys.get(2)?.note + octave.toString()) as string,
+        "r": (keys.get(3)?.note + octave.toString()) as string,
+        "a": (keys.get(4)?.note + octave.toString()) as string,
+        "s": (keys.get(5)?.note + octave.toString()) as string,
+        "d": (keys.get(6)?.note + octave.toString()) as string,
+        "f": (keys.get(7)?.note + octave.toString()) as string,
+        "z": (keys.get(8)?.note + octave.toString()) as string,
+        "x": (keys.get(9)?.note + octave.toString()) as string,
+        "c": (keys.get(10)?.note + octave.toString()) as string,
+        "v": (keys.get(11)?.note + octave.toString()) as string,
     };
 
-    const keyStrokes = useCallback(
+    /*const keyStrokes = useCallback(
         (e) => {
             synth?.triggerAttack(keyCodeLookUpTable[e.keyCode]);
             synth?.triggerRelease("+0.5");
@@ -110,7 +111,9 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
         return () => {
             document.removeEventListener("keydown", keyStrokes);
         };
-    }, [keyStrokes]);
+    }, [keyStrokes]);*/
+    
+    useKeyboardNotes(keyCodeLookUpTable, synth);
 
     // init sound
     useEffect(() => {
