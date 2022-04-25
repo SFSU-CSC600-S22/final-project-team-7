@@ -8,6 +8,7 @@ import { WaveformVisualizer } from './visualizers/Waveform';
 import { WeifomVeezualizah } from './visualizers/V-ngo';
 import { LyreInstrument } from './instruments/V-ngo';
 import { HangInstrument } from "./instruments/eyun1988";
+import { RecorderInstrument } from "./instruments/Recorder";
 import { Rasengan } from "./visualizers/eyun1988";
 import { BrianVis } from "./visualizers/BrianVis";
 import { RainVisualizer } from './visualizers/Rain'
@@ -22,7 +23,7 @@ export type AppState = Map<string, any>; // similar to { [id: string]: any }
  * Start with the default piano instrument.
  * Add your instruments to this list.
  */
-const instruments = List([PianoInstrument, HangInstrument, LyreInstrument, GuitarAcousticInstrument]);       // similar to Instrument[]
+const instruments = List([PianoInstrument, HangInstrument, LyreInstrument, GuitarAcousticInstrument, RecorderInstrument]);       // similar to Instrument[]
 
 /**
  * Start with the default waveform visualizer.

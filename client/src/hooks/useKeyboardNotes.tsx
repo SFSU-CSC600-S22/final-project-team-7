@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /*{
     key: note
