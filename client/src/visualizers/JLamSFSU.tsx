@@ -3,7 +3,7 @@
  * Team: Team 7
  * Name:  Justin Lam
  * 
- * File: Rain.tsx
+ * File: JLamSFSU.tsx
  * 
  * Description: Rain visulaization that pools up at the bottom of the screen
  *              creating a rain meter based on the notes played.

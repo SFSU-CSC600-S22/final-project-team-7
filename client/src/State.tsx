@@ -3,14 +3,14 @@ import { List, Map } from "immutable";
 
 // project dependencies
 import { PianoInstrument } from './instruments/Piano';
-import { GuitarAcousticInstrument } from './instruments/GuitarAcoustic';
+import { GuitarAcousticInstrument } from './instruments/JLamSFSU';
 import { WaveformVisualizer } from './visualizers/Waveform';
 import { WeifomVeezualizah } from './visualizers/V-ngo';
 import { LyreInstrument } from './instruments/V-ngo';
 import { HangInstrument } from "./instruments/eyun1988";
 import { Rasengan } from "./visualizers/eyun1988";
 import { BrianVis } from "./visualizers/BrianVis";
-import { RainVisualizer } from './visualizers/Rain'
+import { RainVisualizer } from './visualizers/JLamSFSU'
 
 
 /** ------------------------------------------------------------------------ **

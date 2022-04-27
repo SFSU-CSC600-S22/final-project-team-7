@@ -3,7 +3,7 @@
  * Team: Team 7
  * Name:  Justin Lam
  * 
- * File: GuitarAcoustic.tsx
+ * File: JLamSFSU.tsx
  * 
  * Description: Acoustic Guitar instrument.
  *****************************************************************************/
