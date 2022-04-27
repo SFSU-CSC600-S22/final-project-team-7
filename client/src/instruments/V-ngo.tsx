@@ -47,9 +47,9 @@ export function LyreKey({
         // CSS
         marginLeft: '21.05rem',
         top: 40,
-        left: `${index * 1.19}rem`,
-        width: '0.30rem',
-        height: '13rem',
+        left: `${index * 1.177}rem`,
+        width: '0.25rem',
+        height: '12.8rem',
         color: "#1f1f1f",
         backgroundColor: "#1f1f1f",
       }}
@@ -74,7 +74,7 @@ function Lyre({ synth, setSynth }: InstrumentProps): JSX.Element {
 
       return new Tone.AMSynth({
           harmonicity: 2,
-          onsilence: true,
+          // onsilence: true,
       }).toDestination() as any;
     });
   };
@@ -88,7 +88,7 @@ function Lyre({ synth, setSynth }: InstrumentProps): JSX.Element {
   return (
     <div className="pv4">
       <div className="relative dib h4 w-100 ml4">
-        <img src={lyrePic} alt="" style={{ marginLeft: '20rem', marginTop: '-1rem', width: 290, height: 290 }}/>
+        <img src={lyrePic} alt="" style={{ marginLeft: '20rem', marginTop: '-1rem', width: '18rem', height: '18rem' }}/>
         {
             keys.map(key => {
                 const note = `${key.note}${5}`;
