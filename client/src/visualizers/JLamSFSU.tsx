@@ -140,6 +140,9 @@ export const RainVisualizer = new Visualizer(
 
     // remove raindrops that are at the bottom of the screen.
     allRainDrops = allRainDrops.filter(element => element.y < height);
+
+    // Throttle to manage excess size of global array, dismissing first half of array
+    // that should have been filtered out but was not removed.
     if (allRainDrops.length > 400)
       allRainDrops = allRainDrops.splice(allRainDrops.length/2, allRainDrops.length);
   },

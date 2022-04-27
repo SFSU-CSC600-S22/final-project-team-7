@@ -17,7 +17,8 @@ import React from 'react';
 // project imports
 import { Instrument, InstrumentProps } from '../Instruments';
 import { useEffect } from 'react';
-import guitarImage from '../img/guitar.png'
+import guitarImage from '../img/guitar.png';
+import guitarCord from '../img/guitar_cord.png';
 
 interface GuitarAcousticKeyProps {
     note: string; // E A D C G Eb Ab Db C7 G7 E7 A7 D7 F B7
@@ -55,44 +56,6 @@ export function GuitarAcousticNote({
             }}
         >{display}</div>
     );
-}
-
-// What is this for?
-function GuitarAcousticKeyWithoutJSX({
-  note,
-  synth,
-  minor,
-  index,
-}: GuitarAcousticKeyProps): JSX.Element {
-  return React.createElement(
-    'div',
-    {
-      onMouseDown: () => synth?.triggerAttack(`${note}`),
-      onMouseUp: () => synth?.triggerRelease('+0.25'),
-      className: classNames('ba pointer absolute dim black bg-white h4'),
-      style: {
-        top: 0,
-        left: `${index * 2}rem`,
-        zIndex: 1,
-        width:'2rem',
-        height: '1rem',
-        marginLeft: '0.25rem',
-      },
-    },
-    []
-  );
-}
-
-
-function GuitarAcousticType({ title, onClick, active }: any): JSX.Element {
-  return (
-    <div
-      onClick={onClick}
-      className={classNames('dim pointer ph2 pv1 ba mr2 br1 fw7 bw1 gray b--light-gray')}
-    >
-      {title}
-    </div>
-  );
 }
 
 /**
@@ -158,7 +121,9 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
           );
         }),
       )}
-      
+      <div className='imageOverlay'>
+        <img src={guitarCord} alt='guitar cords' height='150px' width='200px'></img>
+      </div>
       <img src={guitarImage} alt='guitar' height='230px' width='460px'></img>
     </div>
     </div>);
