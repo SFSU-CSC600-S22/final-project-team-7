@@ -29,6 +29,26 @@ interface GuitarAcousticKeyProps {
     index: number; // octave + index together give a location for the piano key
 }
 
+/** 
+ * 24 places for keys
+ * Note = nodes to highlight
+ * E = 9, 14, 18
+ * A = 6, 10, 14
+ * D = 2, 7, 10
+ * C = 5, 14, 19
+ * G = 3, 18, 23
+ * Eb = 14, 18
+ * Ab = 5, 10, 14
+ * Db = 1, 7, 10
+ * C7 = 5, 11, 14, 19
+ * G7 = 1, 18, 23
+ * E7 = 9, 18
+ * A7 = 6, 14
+ * D7 = 2, 5, 10
+ * F = 1, 5, 10, 15
+ * B7 = 2, 10, 13, 18
+*/
+
 /**
  * Establish prop object to be played
  * @param param0 
@@ -41,10 +61,78 @@ export function GuitarAcousticNote({
     index,
 }: GuitarAcousticKeyProps): JSX.Element {
   const display = (note.indexOf('4') === -1) ? note : note.slice(0, note.length -1);
+  let nodes: number[] = [];
+  switch(note) {
+    case 'E4':
+      nodes.push(9,14,18);
+      break;
+    case 'A4':
+      nodes.push(6,10,14);
+      break;
+    case 'D4':
+      nodes.push(2,7,10);
+      break;
+    case 'C4':
+      nodes.push(5,14,19);
+      break;
+    case 'G4':
+      nodes.push(3,18,23);
+      break;
+    case 'Eb4':
+      nodes.push(14,18);
+      break;
+    case 'Ab4':
+      nodes.push(5,10,14);
+      break;
+    case 'Db4':
+      nodes.push(1,7,10);
+      break;
+    case 'C7':
+      nodes.push(5,11,14,19);
+      break;
+    case 'G7':
+      nodes.push(1,18,23);
+      break;
+    case 'E7':
+      nodes.push(9,18);
+      break;
+    case 'A7':
+      nodes.push(6,14);
+      break;
+    case 'D7':
+      nodes.push(2,5,10);
+      break;
+    case 'F4':
+      nodes.push(1,5,10,15);
+      break;
+    case 'B7':
+      nodes.push(2,10,13,18);
+      break;
+    }
+
+    function hoverNodeOn() {
+      nodes.forEach(element => {
+        let nodeID = document.getElementById('node'+element);
+        if (nodeID) {
+          nodeID.style.opacity = '100%';
+        }
+      });
+    }
+    function hoverNodeOff() {
+      nodes.forEach(element => {
+        let nodeID = document.getElementById('node'+element);
+        if (nodeID) {
+          nodeID.style.opacity = '0%';
+        }
+      });
+    }
+
     return (
         <div
             onMouseDown={() => synth?.triggerAttack(`${note}`)}
             onMouseUp={() => synth?.triggerRelease('+0.25')}
+            onMouseEnter={() => hoverNodeOn()}
+            onMouseLeave={() => hoverNodeOff()}
             className={classNames('ba pointer absolute dim black bg-white h4')}
             style={{
                 top: 0,
@@ -101,28 +189,49 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
       return () => {};
     }, []);
 
+    function hoverOver(event: { target: { style: { opacity: string; }; }; }) {
+      event.target.style.opacity = '100%';
+    }
+
+    function hoverOut(event: { target: { style: { opacity: string; }; }; }) {
+      event.target.style.opacity = '0%';
+    }
+
     // return object that makes up the guitar
     return (
     <div className="pv4">
     <div className="relative dib h4 w-100 ml4">
-      {Range(4,5).map(octave =>
-        keys.map(key => {
+    {keys.map(key => {
           const isMinor = key.note.indexOf('b') !== -1;
-          const note = (key.note.indexOf('7') === -1) ? `${key.note}${octave}` : `${key.note}`;
+          const note = (key.note.indexOf('7') === -1) ? `${key.note}${4}` : `${key.note}`;
           return (
             <GuitarAcousticNote
               key={note} //react key
               note={note}
               synth={synth}
               minor={isMinor}
-              octave={octave}
-              index={(octave - 4) * 7 + key.idx}
+              octave={4}
+              index={key.idx}
             />
           );
-        }),
-      )}
+        })}
       <div className='imageOverlay'>
         <img src={guitarCord} alt='guitar cords' height='150px' width='200px'></img>
+        {Range(1,25).map(gridId => {
+          const idValue = 'node' + gridId.toString();
+          const topCoord = (Math.ceil(gridId/4)+3) * 10 + Math.floor(gridId/4);
+          const leftCoord = 40 * ((gridId % 4) + 1);
+          return (
+          <div
+            id={idValue}
+            style={{
+              opacity: '0%',
+              position: 'absolute',
+              top: `${topCoord}px`,
+              left: `${leftCoord}px`,
+            }}
+            >*</div>)
+        })}
       </div>
       <img src={guitarImage} alt='guitar' height='230px' width='460px'></img>
     </div>
