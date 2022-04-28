@@ -189,14 +189,6 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
       return () => {};
     }, []);
 
-    function hoverOver(event: { target: { style: { opacity: string; }; }; }) {
-      event.target.style.opacity = '100%';
-    }
-
-    function hoverOut(event: { target: { style: { opacity: string; }; }; }) {
-      event.target.style.opacity = '0%';
-    }
-
     // return object that makes up the guitar
     return (
     <div className="pv4">
@@ -227,10 +219,14 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
             style={{
               opacity: '0%',
               position: 'absolute',
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              backgroundColor: 'yellow',
               top: `${topCoord}px`,
               left: `${leftCoord}px`,
             }}
-            >*</div>)
+            ></div>)
         })}
       </div>
       <img src={guitarImage} alt='guitar' height='230px' width='460px'></img>
