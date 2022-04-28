@@ -5,7 +5,7 @@
  * 
  * File: JLamSFSU.tsx
  * 
- * Description: Acoustic Guitar instrument.
+ * Description:  Guitar instrument.
  *****************************************************************************/
 
 // 3rd party library imports
@@ -17,10 +17,10 @@ import React from 'react';
 // project imports
 import { Instrument, InstrumentProps } from '../Instruments';
 import { useEffect } from 'react';
-import guitarImage from '../img/guitar.png';
+// import guitarImage from '../img/guitar.png';
 import guitarCord from '../img/guitar_cord.png';
 
-interface GuitarAcousticKeyProps {
+interface GuitarKeyProps {
     note: string; // E A D C G Eb Ab Db C7 G7 E7 A7 D7 F B7
     duration?: string;
     synth?: Tone.Synth; // Contains library code for making sound
@@ -54,12 +54,12 @@ interface GuitarAcousticKeyProps {
  * @param param0 
  * @returns 
  */
-export function GuitarAcousticNote({
+export function GuitarNote({
     note,
     synth,
     minor,
     index,
-}: GuitarAcousticKeyProps): JSX.Element {
+}: GuitarKeyProps): JSX.Element {
   const display = (note.indexOf('4') === -1) ? note : note.slice(0, note.length -1);
   let nodes: number[] = [];
   switch(note) {
@@ -147,9 +147,64 @@ export function GuitarAcousticNote({
 }
 
 /**
+ * Create the nodes that overlays the image
+ * @param gridId node number for placemet
+ * @returns node div and placement
+ */
+function GuitarNodes(gridId: number, synth: Tone.Synth): JSX.Element {
+  const idValue = 'node' + gridId.toString();
+  const topCoord = (Math.ceil(gridId/4)+3) * 10 + Math.floor(gridId/4);
+  const horizontalId = ((gridId % 4)? (gridId % 4) : 4)
+  const leftCoord = 40 * horizontalId;
+  const noteNumber = ((5 - horizontalId) % 4)? (5 - horizontalId) % 4 : 4;
+  let note = "";
+  if (topCoord < 50) {
+    note = 'e';
+  } else if (topCoord < 60) {
+    note = 'a';
+  } else if (topCoord < 70) {
+    note = 'd';
+  } else if (topCoord < 80) {
+    note = 'c';
+  } else if (topCoord < 90) {
+    note = 'g';
+  } else {
+    note = 'f';
+  }
+  note = note + noteNumber.toString();
+  
+  return (
+    <div
+      id={idValue}
+      onMouseDown={() => synth?.triggerAttack(`${note}`)}
+      onMouseUp={() => synth?.triggerRelease('+0.25')}
+      onMouseEnter={()=> {
+        const node = document.getElementById(idValue);
+        if(node)
+          node.style.opacity = '100%';
+      }}
+      onMouseLeave={()=> {
+        const node = document.getElementById(idValue);
+        if(node)
+          node.style.opacity = '0%';
+      }}
+      style={{
+        opacity: '0%',
+        position: 'absolute',
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        backgroundColor: 'yellow',
+        top: `${topCoord}px`,
+        left: `${leftCoord}px`,
+      }}
+      ></div>)
+}
+
+/**
  * The Guitar itself
  */
-function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
+function Guitar({ synth, setSynth }: InstrumentProps): JSX.Element {
   // Set keys/notes for the instruments
   const keys = List([
     { note: 'E', idx: 0 },
@@ -197,41 +252,22 @@ function GuitarAcoustic({ synth, setSynth }: InstrumentProps): JSX.Element {
           const isMinor = key.note.indexOf('b') !== -1;
           const note = (key.note.indexOf('7') === -1) ? `${key.note}${4}` : `${key.note}`;
           return (
-            <GuitarAcousticNote
+            <GuitarNote
               key={note} //react key
               note={note}
               synth={synth}
               minor={isMinor}
-              octave={4}
+              octave={5}
               index={key.idx}
             />
           );
         })}
       <div className='imageOverlay'>
         <img src={guitarCord} alt='guitar cords' height='150px' width='200px'></img>
-        {Range(1,25).map(gridId => {
-          const idValue = 'node' + gridId.toString();
-          const topCoord = (Math.ceil(gridId/4)+3) * 10 + Math.floor(gridId/4);
-          const leftCoord = 40 * ((gridId % 4) + 1);
-          return (
-          <div
-            id={idValue}
-            style={{
-              opacity: '0%',
-              position: 'absolute',
-              width: '10px',
-              height: '10px',
-              borderRadius: '50%',
-              backgroundColor: 'yellow',
-              top: `${topCoord}px`,
-              left: `${leftCoord}px`,
-            }}
-            ></div>)
-        })}
+        {Range(1,25).map(gridId => {return GuitarNodes(gridId, synth)})}
       </div>
-      <img src={guitarImage} alt='guitar' height='230px' width='460px'></img>
     </div>
     </div>);
 }
 
-export const GuitarAcousticInstrument = new Instrument('GuitarAcoustic', GuitarAcoustic);
+export const GuitarInstrument = new Instrument('Guitar', Guitar);

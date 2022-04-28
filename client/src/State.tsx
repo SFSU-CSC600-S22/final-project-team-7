@@ -3,7 +3,7 @@ import { List, Map } from "immutable";
 
 // project dependencies
 import { PianoInstrument } from './instruments/Piano';
-import { GuitarAcousticInstrument } from './instruments/JLamSFSU';
+import { GuitarInstrument } from './instruments/JLamSFSU';
 import { WaveformVisualizer } from './visualizers/Waveform';
 import { WeifomVeezualizah } from './visualizers/V-ngo';
 import { LyreInstrument } from './instruments/V-ngo';
@@ -22,7 +22,7 @@ export type AppState = Map<string, any>; // similar to { [id: string]: any }
  * Start with the default piano instrument.
  * Add your instruments to this list.
  */
-const instruments = List([PianoInstrument, HangInstrument, LyreInstrument, GuitarAcousticInstrument]);       // similar to Instrument[]
+const instruments = List([PianoInstrument, HangInstrument, LyreInstrument, GuitarInstrument]);       // similar to Instrument[]
 
 /**
  * Start with the default waveform visualizer.
