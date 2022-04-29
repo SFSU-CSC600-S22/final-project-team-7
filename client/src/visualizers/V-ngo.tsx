@@ -30,23 +30,37 @@ export const WeifomVeezualizah = new Visualizer(
 
     for (let i = 0; i < values.length * 2; i++) {
         let amp = values[i] as number;
+        let freq = 1 / amp;
 
         if (flowerPetal % 2 === 0) {
             p5.ellipse(
-              0 + amp * 100,
+              amp * 100,
               100 + amp * 500,
               5 + amp * 0,
               5 + amp * 0
             );
+            p5.ellipse(
+              freq,
+              amp * 10,
+              amp * 10,
+              amp * 10
+            )
         }
         else {
             p5.ellipse(
-              0 + amp * 0,
+              0,
               68 + amp * 100,
               20 + amp * 100,
               130 + amp * 100
             );
+            p5.ellipse(
+              freq,
+              amp * 10,
+              amp * 10,
+              amp * 10
+            )
         }
+
         flowerPetal++;
 
         p5.rotate(p5.PI / 8);

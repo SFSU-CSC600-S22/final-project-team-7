@@ -47,8 +47,8 @@ export function LyreKey({
                 // CSS
                 marginLeft: "21.05rem",
                 top: 40,
-                left: `${index * 1.19}rem`,
-                width: "0.30rem",
+                left: `${index * 1.17}rem`,
+                width: "0.38rem",
                 height: "13rem",
                 color: "#1f1f1f",
                 backgroundColor: "#1f1f1f",
@@ -72,12 +72,12 @@ function Lyre({ synth, setSynth }: InstrumentProps): JSX.Element {
         setSynth((oldSynth) => {
             oldSynth.disconnect();
 
-            return new Tone.AMSynth({
-                harmonicity: 2,
-                // onsilence: true,
-            }).toDestination() as any;
-        });
-    };
+      return new Tone.AMSynth({
+          harmonicity: 2,
+          // onsilence: true,
+      }).toDestination() as any;
+    });
+  };
 
     useEffect(() => {
         setOscillator("sine");
@@ -93,8 +93,8 @@ function Lyre({ synth, setSynth }: InstrumentProps): JSX.Element {
                     style={{
                         marginLeft: "20rem",
                         marginTop: "-1rem",
-                        width: 290,
-                        height: 290,
+                        width: "18rem",
+                        height: "18rem",
                     }}
                 />
                 {keys.map((key) => {
