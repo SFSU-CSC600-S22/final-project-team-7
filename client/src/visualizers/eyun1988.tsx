@@ -14,7 +14,8 @@ export const Rasengan = new Visualizer(
         p5.background(0, 0, 0, 255);
         p5.strokeWeight(dim * 0.01);
         p5.noFill();
-        const values = analyzer.getValue();
+        const values = analyzer.getValue(); // amplitude
+
         p5.beginShape();
         p5.rotateX(p5.frameCount * 0.1 * 100);
         p5.rotateY(p5.frameCount * 0.1 * 100);
@@ -27,10 +28,14 @@ export const Rasengan = new Visualizer(
                 sum += sum;
             }
 
+            const frequencyOfSummedAmplitude = 1 / sum;
+
             for (let i = 0; i < 15; i++) {
                 p5.translate(
-                    p5.sin(sum * 20 * 0.01 + j) * 100,
-                    p5.sin(sum * 20 * 0.01 + j) * 100,
+                    p5.sin(sum * 0.2 + j) * 100 * frequencyOfSummedAmplitude
+                        ? frequencyOfSummedAmplitude
+                        : 1,
+                    p5.sin(sum * 0.2 + j) * 100,
                     i * 0.01 + sum
                 );
                 let r = p5.map(p5.sin(p5.frameCount / 2), -1, 1, 100, 200);
@@ -47,7 +52,6 @@ export const Rasengan = new Visualizer(
                 p5.sphere(40, 10, 10);
                 p5.pop();
             }
-            p5.pop();
         }
         p5.endShape();
     }
