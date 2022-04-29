@@ -3,6 +3,7 @@ import * as Tone from "tone";
 
 import styles from "../styles/Recorder.module.css";
 import { useEffect } from "react";
+import { Synth } from "tone";
 
 const Recorder = ({ synth, setSynth }: InstrumentProps): JSX.Element => {
     const notes = ["B", "A", "G", "F", "E", "D", "C"];
@@ -10,14 +11,14 @@ const Recorder = ({ synth, setSynth }: InstrumentProps): JSX.Element => {
     const setOscillator = (newType: Tone.ToneOscillatorType) => {
         setSynth(oldSynth => {
             oldSynth.disconnect();
-            return new Tone.Synth({
+            return new Tone.MonoSynth({
                 oscillator: { type: newType } as Tone.OmniOscillatorOptions,
-            }).toDestination();
+            }).toDestination() as any;
         });
     };
 
     useEffect(() => {
-        setOscillator("sine");
+        setOscillator("triangle");
         // eslint-disable-next-line
     }, []);
     
