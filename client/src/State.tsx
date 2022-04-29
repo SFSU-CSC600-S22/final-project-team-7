@@ -8,9 +8,9 @@ import { WaveformVisualizer } from './visualizers/Waveform';
 import { WeifomVeezualizah } from './visualizers/V-ngo';
 import { LyreInstrument } from './instruments/V-ngo';
 import { HangInstrument } from "./instruments/eyun1988";
-import { RecorderInstrument } from "./instruments/Recorder";
+import { RecorderInstrument } from "./instruments/brianadams731";
 import { Rasengan } from "./visualizers/eyun1988";
-import { BrianVis } from "./visualizers/BrianVis";
+import { BrianVis } from "./visualizers/brianadams731";
 import { RainVisualizer } from './visualizers/JLamSFSU'
 
 
