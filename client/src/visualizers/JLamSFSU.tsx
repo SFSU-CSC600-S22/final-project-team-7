@@ -3,7 +3,7 @@
  * Team: Team 7
  * Name:  Justin Lam
  * 
- * File: Rain.tsx
+ * File: JLamSFSU.tsx
  * 
  * Description: Rain visulaization that pools up at the bottom of the screen
  *              creating a rain meter based on the notes played.
@@ -34,6 +34,14 @@ type rainDrop = {
 //   droplets: number,
 //   color: number[]
 // }
+
+/**
+ * LightningBolt object
+ */
+type lightningBolt = {
+  x:number,
+  color: number[]
+}
 
 /**
  * Constructer for Rain Drop object
@@ -67,6 +75,13 @@ function newRainDrop(x: number, y: number, speed: number, color: number[]): rain
 //   }
 // }
 
+function newLightningBolt(x: number, color: number[]): lightningBolt {
+  return {
+    x: x,
+    color: color
+  }
+}
+
 /**
  * Tracks all rain drops
  */
@@ -99,18 +114,23 @@ export const RainVisualizer = new Visualizer(
 
     p5.background(0, 0, 0, 255);
 
+    // Grabs max amplitude value.
     const values = analyzer.getValue();
-    let maxXCoord: number = 0;
+    let maxAmplitude: number = 0;
     values.forEach(element => {
       let valueToBeCheck = width * (element as number);
       if (valueToBeCheck > 0) 
-        maxXCoord = Math.max(valueToBeCheck, maxXCoord);
-    })
+        maxAmplitude = Math.max(valueToBeCheck, maxAmplitude);
+    });
+
+    // placement of lightning maxFrequency = (1 / maxAmplitude)
+    const lightning: number = width / (1 / maxAmplitude);
+    const bolt = newLightningBolt(lightning, goldDroplet);
 
     // Add Raindrops into array.
-    if (maxXCoord > 0) {
-      // Raindrop based on frequency
-      allRainDrops.push(newRainDrop(maxXCoord, 0, 2, goldDroplet));
+    if (maxAmplitude > 0) {
+      // Raindrop based on amplitude
+      allRainDrops.push(newRainDrop(maxAmplitude, 0, 2, goldDroplet));
       // Random Raindrop for effect
       allRainDrops.push(newRainDrop(Math.random() * width % width, 0, 2, blueDroplet));
     }
@@ -138,9 +158,12 @@ export const RainVisualizer = new Visualizer(
     //   evaporateTimer++;
     // }
 
+    // draw lightning bolts
+    if (lightning > 10)
+      drawLightningBolt(p5, bolt, height);
+
     // remove raindrops that are at the bottom of the screen.
     allRainDrops = allRainDrops.filter(element => element.y < height);
-
   },
 );
 
@@ -151,6 +174,7 @@ export const RainVisualizer = new Visualizer(
  */
 function drawRainDrop(p5: P5, droplet: rainDrop) {
   let xCoord: number = droplet.x;
+  if (xCoord < 1) return;
   let yCoord: number = droplet.y;
   let rainDropcolor = droplet.color; // default blue rain
 
@@ -171,8 +195,6 @@ function drawRainDrop(p5: P5, droplet: rainDrop) {
 function updateRainDrop(droplet: rainDrop) {
   if (droplet.y < window.innerHeight) {
     droplet.y = droplet.y + droplet.speed;
-    if (droplet.y > window.innerHeight)
-      droplet.y = window.innerHeight;
   }
 }
 
@@ -217,3 +239,29 @@ function updateRainDrop(droplet: rainDrop) {
 //       meter.droplets--;
 //   });
 // }
+
+/**
+ * Draws a lighningbolt across the screen
+ * @param p5 
+ * @param bolt 
+ * @param height 
+ */
+function drawLightningBolt(p5: P5, bolt: lightningBolt, height: number) {
+  let xCoord: number = bolt.x;
+  let innerHeight: number = height;
+  let boltColor = bolt.color;
+
+  // set color of bolt
+  p5.stroke(boltColor[0], boltColor[1], boltColor[2], boltColor[3]);
+  p5.fill(boltColor[0], boltColor[1], boltColor[2], boltColor[3]);
+  
+  // set shape of bolt
+  for (let i = 0; i < 23; i++) {
+    p5.line(
+      (i % 2 === 0)? xCoord : xCoord + 25,
+      innerHeight * (i / 24),
+      (i % 2 === 0)? xCoord + 25: xCoord, 
+      innerHeight * ((i + 1) / 24)
+      );
+  }
+} 

@@ -1,0 +1,78 @@
+@keyframes keyHit {
+    0%{
+        transform: translate(-50%,-50%) scale(0);
+    }
+
+    100%{
+        transform: translate(-50%,-50%) scale(1);
+    }
+}
+
+.wrapper{
+    position: relative;
+    display: flex;
+    width: fit-content;
+    margin: auto;
+    margin-top: 20vh;
+    width: 800px;
+    transform: translateY(-50%);
+}
+.wrapper img{
+    left:0;
+    top:0;
+}
+
+.hole{
+    border-radius: 50%;
+    position: absolute;
+    /*background-color: rgba(0, 0, 255, 0.267);*/
+    width: 25px;
+    height: 25px;
+
+    top:50%;
+    transform: translateY(-55%);
+}
+
+.hole:hover{
+    cursor: pointer;
+}
+
+
+.hole::after{
+    content: "";
+    position: absolute;
+    left:50%;
+    top:50%;
+
+
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%,-50%) scale(0);
+}
+
+.one{
+    top: 49.8%;
+    left: 43.8%;
+
+}
+.two{
+    left: 50%;
+}
+.three{
+    left: 56.3%;
+}
+
+.four{
+    left: 64%;
+}
+.five{
+    left: 71%;
+}
+.six{
+    left: 76.4%;
+}
+.seven{
+    top: 63%;
+    left: 82%;
+}
