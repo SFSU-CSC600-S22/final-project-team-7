@@ -7,6 +7,7 @@ import React, { useEffect, useCallback } from "react";
 // project imports
 import { Instrument, InstrumentProps } from "../Instruments";
 import { useKeyboardNotes } from "../hooks/useKeyboardNotes";
+import styles from "../styles/Hang.module.css";
 
 /** ------------------------------------------------------------------------ **
  * Contains implementation of components for Hang.
@@ -31,20 +32,15 @@ export function HangKey({
     return (
         <div
             onMouseDown={() => synth?.triggerAttackRelease(`${note}`, `8n`)} // Question: what is `onMouseDown`?
-            className={classNames("ba pointer absolute dim", {
-                "black bg-white h4": !minor, // major keys are white
-            })}
+            className={classNames(
+                "ba pointer absolute dim",
+                {
+                    "black bg-white": !minor, // major keys are white
+                },
+                styles.hangKey
+            )}
             style={{
-                height: `50px`,
-                width: `50px`,
-                position: `absolute`,
                 transform: `rotate(${degree}deg) translate(140px) rotate(-${degree}deg)`,
-                borderRadius: `100%`,
-                display: `flex`,
-                justifyContent: `center`,
-                alignItems: `center`,
-                marginTop: `200px`,
-                marginLeft: `200px`,
             }}
         ></div>
     );
@@ -84,18 +80,18 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
 
     // order of keys are q,w,e,r,a,s,d,f,z,x,c,v
     const keyCodeLookUpTable: { [key: string]: string } = {
-        "q": (keys.get(0)?.note + octave.toString()) as string,
-        "w": (keys.get(1)?.note + octave.toString()) as string,
-        "e": (keys.get(2)?.note + octave.toString()) as string,
-        "r": (keys.get(3)?.note + octave.toString()) as string,
-        "a": (keys.get(4)?.note + octave.toString()) as string,
-        "s": (keys.get(5)?.note + octave.toString()) as string,
-        "d": (keys.get(6)?.note + octave.toString()) as string,
-        "f": (keys.get(7)?.note + octave.toString()) as string,
-        "z": (keys.get(8)?.note + octave.toString()) as string,
-        "x": (keys.get(9)?.note + octave.toString()) as string,
-        "c": (keys.get(10)?.note + octave.toString()) as string,
-        "v": (keys.get(11)?.note + octave.toString()) as string,
+        q: (keys.get(0)?.note + octave.toString()) as string,
+        w: (keys.get(1)?.note + octave.toString()) as string,
+        e: (keys.get(2)?.note + octave.toString()) as string,
+        r: (keys.get(3)?.note + octave.toString()) as string,
+        a: (keys.get(4)?.note + octave.toString()) as string,
+        s: (keys.get(5)?.note + octave.toString()) as string,
+        d: (keys.get(6)?.note + octave.toString()) as string,
+        f: (keys.get(7)?.note + octave.toString()) as string,
+        z: (keys.get(8)?.note + octave.toString()) as string,
+        x: (keys.get(9)?.note + octave.toString()) as string,
+        c: (keys.get(10)?.note + octave.toString()) as string,
+        v: (keys.get(11)?.note + octave.toString()) as string,
     };
 
     /*const keyStrokes = useCallback(
@@ -112,7 +108,7 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
             document.removeEventListener("keydown", keyStrokes);
         };
     }, [keyStrokes]);*/
-    
+
     useKeyboardNotes(keyCodeLookUpTable, synth);
 
     // init sound
@@ -123,17 +119,7 @@ function Hang({ synth, setSynth }: InstrumentProps): JSX.Element {
 
     return (
         <div className="pv4">
-            <div
-                className=""
-                style={{
-                    height: `452px`,
-                    width: `445px`,
-                    borderRadius: `51%`,
-                    border: `1px solid black`,
-                    position: `relative`,
-                    marginLeft: `100px`,
-                }}
-            >
+            <div className={styles.ring}>
                 {keys.map((key) => {
                     const note = `${key.note}${octave}`;
                     return (
