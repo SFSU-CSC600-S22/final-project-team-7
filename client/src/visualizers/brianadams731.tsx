@@ -16,7 +16,7 @@ const BrianVis = new Visualizer(
 
         const frameThrottle = 3;
         const addThrottle = 1.2;
-        const subtractThrottle = .7;
+        const subtractThrottle = 1.3;
 
         const width = window.innerWidth - (window as any).brianLeftOffset;
         const height = window.innerHeight / 2;

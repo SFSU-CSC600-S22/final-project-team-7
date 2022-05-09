@@ -25,7 +25,9 @@ const useKeyboardNotes = (keyNotes: IKeyNotes, synth: Tone.Synth<Tone.SynthOptio
             }     
             activeKeys.current = [...activeKeys.current, e.key]
             */
-            synth?.triggerAttackRelease(currentKeyNotes[e.key],"4n");
+            if(currentKeyNotes[e.key]){
+                synth?.triggerAttackRelease(currentKeyNotes[e.key],"4n");
+            }           
         }
 
         const endNote = (e: KeyboardEvent) => {

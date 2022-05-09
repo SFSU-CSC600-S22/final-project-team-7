@@ -3,10 +3,19 @@ import * as Tone from "tone";
 
 import styles from "../styles/Recorder.module.css";
 import { useEffect } from "react";
-import { Synth } from "tone";
+import { useKeyboardNotes } from "../hooks/useKeyboardNotes";
 
 const Recorder = ({ synth, setSynth }: InstrumentProps): JSX.Element => {
     const notes = ["B", "A", "G", "F", "E", "D", "C"];
+    const keyCodeLookUpTable: { [key: string]: string } = {
+        "q": "B5",
+        "w": "A5",
+        "e": "G5",
+        "r": "F5",
+        "t": "E5",
+        "y": "D5",
+        "u": "C5",
+    };
 
     const setOscillator = (newType: Tone.ToneOscillatorType) => {
         setSynth(oldSynth => {
@@ -21,7 +30,9 @@ const Recorder = ({ synth, setSynth }: InstrumentProps): JSX.Element => {
         setOscillator("triangle");
         // eslint-disable-next-line
     }, []);
-    
+
+    useKeyboardNotes(keyCodeLookUpTable, synth);
+
     return (
         <div className={styles.wrapper}
             onMouseDown={(e) => {
