@@ -1,0 +1,20 @@
+.hangKey {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    margin-left: 200px;
+}
+
+.ring {
+    height: 452px;
+    width: 445px;
+    border-radius: 51%;
+    border: 1px solid black;
+    position: relative;
+    margin-left: 100px;
+}
